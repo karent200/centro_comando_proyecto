@@ -1,0 +1,64 @@
+{% extends 'infraestructura/base.html' %}
+
+{% block title %}Incidencia - {{ incidencia.titulo }}{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-8">
+        <div class="card shadow-sm border-0">
+            <div class="card-header d-flex justify-content-between align-items-center py-3
+                {% if incidencia.severidad == 'critica' %}bg-danger
+                {% elif incidencia.severidad == 'alta' %}bg-warning
+                {% else %}bg-secondary{% endif %} text-white">
+                <h4 class="mb-0">Incidencia: {{ incidencia.titulo }}</h4>
+                <span class="badge bg-light text-dark">
+                    {{ incidencia.get_severidad_display|upper }}
+                </span>
+            </div>
+            <div class="card-body p-4">
+                <ul class="list-group list-group-flush mb-4">
+                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                        <span class="fw-bold">Servidor:</span>
+                        <a href="{% url 'detalle_servidor' incidencia.servidor.pk %}" class="text-primary text-decoration-none">
+                            {{ incidencia.servidor.nombre_host }}
+                        </a>
+                    </li>
+                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                        <span class="fw-bold">Severidad:</span>
+                        <span>
+                            {% if incidencia.severidad == 'critica' %}<span class="badge bg-danger">Crítica</span>
+                            {% elif incidencia.severidad == 'alta' %}<span class="badge bg-warning text-dark">Alta</span>
+                            {% elif incidencia.severidad == 'media' %}<span class="badge bg-info text-dark">Media</span>
+                            {% else %}<span class="badge bg-secondary">Baja</span>{% endif %}
+                        </span>
+                    </li>
+                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                        <span class="fw-bold">Estado:</span>
+                        <span>
+                            {% if incidencia.resuelto %}
+                                <span class="badge bg-success">Resuelto</span>
+                            {% else %}
+                                <span class="badge bg-danger">Activa</span>
+                            {% endif %}
+                        </span>
+                    </li>
+                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                        <span class="fw-bold">Fecha de Registro:</span>
+                        <span class="text-muted">{{ incidencia.fecha_evento|date:"Y-m-d H:i" }}</span>
+                    </li>
+                </ul>
+                <div class="mb-4">
+                    <h5 class="text-muted">Descripción del Fallo</h5>
+                    <p class="card-text">{{ incidencia.descripcion|linebreaksbr }}</p>
+                </div>
+                <div class="d-flex justify-content-between">
+                    <a href="{% url 'detalle_servidor' incidencia.servidor.pk %}" class="btn btn-outline-secondary">← Volver al Servidor</a>
+                    {% if not incidencia.resuelto %}
+                        <a href="{% url 'resolver_incidencia' incidencia.pk %}" class="btn btn-success">Marcar como Resuelta</a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

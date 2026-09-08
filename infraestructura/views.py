@@ -1,7 +1,37 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib import messages
-from .forms import NodoServidorForm
-from .models import NodoServidor
+from .forms import NodoServidorForm, IncidenciaServidorForm
+from .models import NodoServidor, IncidenciaServidor
+
+
+def crear_incidencia(request, pk):
+    servidor = get_object_or_404(NodoServidor, pk=pk)
+    if request.method == 'POST':
+        form = IncidenciaServidorForm(request.POST)
+        if form.is_valid():
+            incidencia = form.save(commit=False)
+            incidencia.servidor = servidor
+            incidencia.save()
+            messages.success(request, 'Incidencia registrada correctamente.')
+            return redirect('detalle_servidor', pk=servidor.pk)
+    else:
+        form = IncidenciaServidorForm()
+    return render(request, 'infraestructura/crear_incidencia.html', {'form': form, 'servidor': servidor})
+
+
+def detalle_incidencia(request, pk):
+    incidencia = get_object_or_404(IncidenciaServidor, pk=pk)
+    return render(request, 'infraestructura/detalle_incidencia.html', {'incidencia': incidencia})
+
+
+def resolver_incidencia(request, pk):
+    incidencia = get_object_or_404(IncidenciaServidor, pk=pk)
+    if request.method == 'POST':
+        incidencia.resuelto = True
+        incidencia.save()
+        messages.success(request, f'La incidencia "{incidencia.titulo}" fue marcada como resuelta.')
+        return redirect('detalle_servidor', pk=incidencia.servidor.pk)
+    return render(request, 'infraestructura/resolver_incidencia.html', {'incidencia': incidencia})
 
 
 def eliminar_servidor(request, pk):

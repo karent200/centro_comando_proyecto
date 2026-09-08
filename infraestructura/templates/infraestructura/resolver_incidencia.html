@@ -1,0 +1,24 @@
+{% extends 'infraestructura/base.html' %}
+
+{% block title %}Resolver Incidencia - {{ incidencia.titulo }}{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-6">
+        <div class="card shadow-sm border-0 text-center p-4">
+            <div class="card-body">
+                <h3 class="text-success mb-3">Confirmar Resolución</h3>
+                <p class="text-muted">
+                    ¿Marcar la incidencia <strong>{{ incidencia.titulo }}</strong>
+                    del servidor <strong>{{ incidencia.servidor.nombre_host }}</strong> como resuelta?
+                </p>
+                <form method="POST" class="mt-4">
+                    {% csrf_token %}
+                    <a href="{% url 'detalle_incidencia' incidencia.pk %}" class="btn btn-secondary me-2">Cancelar</a>
+                    <button type="submit" class="btn btn-success">Sí, marcar como resuelta</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

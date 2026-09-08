@@ -65,6 +65,40 @@ class NodoServidor(models.Model):
         verbose_name_plural = "Flota de Servidores"
 
 
+class IncidenciaServidor(models.Model):
+    SEVERIDAD_CHOICES = [
+        ('critica', 'Crítica'),
+        ('alta', 'Alta'),
+        ('media', 'Media'),
+        ('baja', 'Baja'),
+    ]
+
+    servidor = models.ForeignKey(
+        NodoServidor,
+        on_delete=models.CASCADE,
+        related_name='incidencias',
+    )
+    titulo = models.CharField(max_length=150, verbose_name="Título del Fallo")
+    descripcion = models.TextField(verbose_name="Descripción")
+    severidad = models.CharField(
+        max_length=10,
+        choices=SEVERIDAD_CHOICES,
+        default='media',
+        verbose_name="Severidad"
+    )
+    resuelto = models.BooleanField(default=False, verbose_name="¿Resuelto?")
+    fecha_evento = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        estado = "resuelta" if self.resuelto else "activa"
+        return f"Incidencia {self.titulo} ({self.get_severidad_display()}) - {estado}"
+
+    class Meta:
+        verbose_name = "Incidencia de Servidor"
+        verbose_name_plural = "Alertas e Incidencias"
+        ordering = ('-fecha_evento',)
+
+
 class RegistroAuditoria(models.Model):
     servidor = models.ForeignKey(
         NodoServidor,

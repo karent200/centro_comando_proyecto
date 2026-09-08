@@ -1,6 +1,6 @@
 from django.contrib import admin
 from django.contrib import messages
-from .models import NodoServidor, RegistroAuditoria
+from .models import NodoServidor, RegistroAuditoria, IncidenciaServidor
 
 
 class RegistroAuditoriaInline(admin.TabularInline):
@@ -42,6 +42,15 @@ class NodoServidorAdmin(admin.ModelAdmin):
             f"{actualizados} nodo(s) puesto(s) en MANTENIMIENTO.",
             messages.WARNING,
         )
+
+
+@admin.register(IncidenciaServidor)
+class IncidenciaServidorAdmin(admin.ModelAdmin):
+    list_display = ('titulo', 'servidor', 'severidad', 'resuelto', 'fecha_evento')
+    list_filter = ('severidad', 'resuelto', 'servidor')
+    search_fields = ('titulo', 'descripcion', 'servidor__nombre_host')
+    ordering = ('-fecha_evento',)
+    list_editable = ('resuelto',)
 
 
 @admin.register(RegistroAuditoria)

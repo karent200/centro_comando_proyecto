@@ -5,6 +5,9 @@ from infraestructura.views import (
     crear_servidor,
     editar_servidor,
     eliminar_servidor,
+    crear_incidencia,
+    detalle_incidencia,
+    resolver_incidencia,
 )
 
 urlpatterns = [
@@ -13,4 +16,7 @@ urlpatterns = [
     path('servidor/nuevo/', crear_servidor, name='crear_servidor'),
     path('servidor/<int:pk>/editar/', editar_servidor, name='editar_servidor'),
     path('servidor/<int:pk>/eliminar/', eliminar_servidor, name='eliminar_servidor'),
+    path('servidor/<int:pk>/incidencias/nueva/', crear_incidencia, name='crear_incidencia'),
+    path('incidencia/<int:pk>/', detalle_incidencia, name='detalle_incidencia'),
+    path('incidencia/<int:pk>/resolver/', resolver_incidencia, name='resolver_incidencia'),
 ]
