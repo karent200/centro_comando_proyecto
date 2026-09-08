@@ -1,0 +1,40 @@
+{% extends 'infraestructura/base.html' %}
+{% block title %}Detalle - {{ nodo.nombre_host }}{% endblock %}
+{% block content %}
+<div class="row justify-content-center">
+<div class="col-md-8">
+<div class="card shadow-sm border-0">
+<div class="card-header bg-primary text-white py-3">
+<h4 class="mb-0">Ficha Técnica del Servidor: {{ nodo.nombre_host }}</h4>
+</div>
+<div class="card-body p-4">
+<ul class="list-group list-group-flush mb-4">
+<li class="list-group-item d-flex justify-content-between align-items-center">
+<span class="fw-bold">Dirección IP:</span>
+<span class="font-monospace text-secondary">{{ nodo.direccion_ip }}</span>
+</li>
+<li class="list-group-item d-flex justify-content-between align-items-center">
+<span class="fw-bold">Motor de Contenedores:</span>
+<span>{{ nodo.get_motor_contenedores_display }}</span>
+</li>
+<li class="list-group-item d-flex justify-content-between align-items-center">
+<span class="fw-bold">Proxy Inverso Nginx:</span>
+<span>{% if nodo.proxy_inverso %}Habilitado{% else %}Deshabilitado{% endif %}</span>
+</li>
+<li class="list-group-item d-flex justify-content-between align-items-center">
+<span class="fw-bold">Estado Operativo:</span>
+<span>{% if nodo.en_produccion %}<span class="badge bg-success">Producción</span>{% else %}<span class="badge bg-warning text-dark">Mantenimiento</span>{% endif %}</span>
+</li>
+<li class="list-group-item d-flex justify-content-between align-items-center">
+<span class="fw-bold">Fecha de Despliegue:</span>
+<span class="text-muted">{{ nodo.fecha_despliegue|date:"Y-m-d H:i" }}</span>
+</li>
+</ul>
+<div class="d-flex justify-content-between">
+<a href="{% url 'home_servidores' %}" class="btn btn-outline-secondary">← Volver al Listado</a>
+</div>
+</div>
+</div>
+</div>
+</div>
+{% endblock %}
