@@ -117,3 +117,31 @@ class RegistroAuditoria(models.Model):
         verbose_name = "Registro de Auditoría"
         verbose_name_plural = "Registros de Auditoría"
         ordering = ('-fecha_evento',)
+
+
+class MantenimientoNodo(models.Model):
+    TIPO_TAREA = [
+        ('actualizacion', 'Actualización de Sistema'),
+        ('backup', 'Respaldo de Base de Datos'),
+        ('seguridad', 'Parche de Seguridad'),
+        ('hardware', 'Revisión de Hardware'),
+    ]
+
+    servidor = models.ForeignKey(
+        NodoServidor,
+        on_delete=models.CASCADE,
+        related_name='mantenimientos',
+        verbose_name="Servidor Asignado"
+    )
+    titulo_tarea = models.CharField(max_length=150, verbose_name="Título del Mantenimiento")
+    descripcion_tecnica = models.TextField(verbose_name="Descripción de la Tarea")
+    tipo = models.CharField(max_length=30, choices=TIPO_TAREA, default='actualizacion', verbose_name="Tipo de Tarea")
+    completado = models.BooleanField(default=False, verbose_name="¿Tarea Ejecutada?")
+    fecha_programada = models.DateTimeField(verbose_name="Fecha y Hora Programada")
+
+    def __str__(self):
+        return f"{self.titulo_tarea} - {self.servidor.nombre_host}"
+
+    class Meta:
+        verbose_name = "Mantenimiento de Servidor"
+        verbose_name_plural = "Programación de Mantenimientos"

@@ -1,6 +1,6 @@
 from django.contrib import admin
 from django.contrib import messages
-from .models import NodoServidor, RegistroAuditoria, IncidenciaServidor
+from .models import NodoServidor, RegistroAuditoria, IncidenciaServidor, MantenimientoNodo
 
 
 class RegistroAuditoriaInline(admin.TabularInline):
@@ -51,6 +51,15 @@ class IncidenciaServidorAdmin(admin.ModelAdmin):
     search_fields = ('titulo', 'descripcion', 'servidor__nombre_host')
     ordering = ('-fecha_evento',)
     list_editable = ('resuelto',)
+
+
+@admin.register(MantenimientoNodo)
+class MantenimientoNodoAdmin(admin.ModelAdmin):
+    list_display = ('titulo_tarea', 'servidor', 'tipo', 'completado', 'fecha_programada')
+    list_filter = ('tipo', 'completado', 'servidor')
+    search_fields = ('titulo_tarea', 'descripcion_tecnica', 'servidor__nombre_host')
+    ordering = ('fecha_programada',)
+    list_editable = ('completado',)
 
 
 @admin.register(RegistroAuditoria)

@@ -6,9 +6,13 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body class="bg-light">
-    <nav class="navbar navbar-dark bg-dark mb-4 shadow-sm">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark mb-4 shadow-sm">
         <div class="container-fluid px-4">
             <a class="navbar-brand fw-bold" href="{% url 'home_servidores' %}">UdenarNova | Comando</a>
+            <div class="navbar-nav ms-auto">
+                <a class="nav-link" href="{% url 'home_servidores' %}">Servidores</a>
+                <a class="nav-link" href="{% url 'lista_mantenimientos' %}">Mantenimientos</a>
+            </div>
         </div>
     </nav>
     <div class="container">

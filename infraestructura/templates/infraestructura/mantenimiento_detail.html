@@ -1,0 +1,47 @@
+{% extends 'infraestructura/base.html' %}
+{% block title %}Detalle - {{ mantenimiento.titulo_tarea }}{% endblock %}
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-8">
+        <div class="card shadow-sm border-0">
+            <div class="card-header bg-primary text-white py-3">
+                <h4 class="mb-0">Tarea Técnica: {{ mantenimiento.titulo_tarea }}</h4>
+            </div>
+            <div class="card-body p-4">
+                <ul class="list-group list-group-flush mb-4">
+                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                        <span class="fw-bold">Servidor:</span>
+                        <span>{{ mantenimiento.servidor.nombre_host }} ({{ mantenimiento.servidor.direccion_ip }})</span>
+                    </li>
+                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                        <span class="fw-bold">Tipo de Tarea:</span>
+                        <span>{{ mantenimiento.get_tipo_display }}</span>
+                    </li>
+                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                        <span class="fw-bold">Fecha Programada:</span>
+                        <span class="text-muted">{{ mantenimiento.fecha_programada|date:"Y-m-d H:i" }}</span>
+                    </li>
+                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                        <span class="fw-bold">Estado:</span>
+                        <span>
+                            {% if mantenimiento.completado %}
+                                <span class="badge bg-success">Ejecutado</span>
+                            {% else %}
+                                <span class="badge bg-warning text-dark">Pendiente</span>
+                            {% endif %}
+                        </span>
+                    </li>
+                </ul>
+                <div class="mb-4">
+                    <h5 class="text-muted">Descripción Técnica</h5>
+                    <p class="card-text">{{ mantenimiento.descripcion_tecnica|linebreaksbr }}</p>
+                </div>
+                <div class="d-flex justify-content-between">
+                    <a href="{% url 'lista_mantenimientos' %}" class="btn btn-outline-secondary">← Volver al Listado</a>
+                    <a href="{% url 'editar_mantenimiento' mantenimiento.pk %}" class="btn btn-outline-warning">Editar</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
